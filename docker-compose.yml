@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  carto_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: carto_server
+    env_file:
+      - server-config.env
+    ports:
+      - '5000:5000'
+    networks:
+      - carto_net
+
+  carto_postgres:
+    image: postgres
+    container_name: carto_postgres
+    restart: always
+    ports:
+      - '5432:5432'
+      - '127.0.0.1:8888:5432'
+    env_file:
+      - database.env
+    volumes:
+      - carto_postgres:/var/lib/postgresql/data
+    networks:
+      - carto_net
+
+networks:
+  carto_net:
+
+volumes:
+  carto_postgres:
+    driver: local
