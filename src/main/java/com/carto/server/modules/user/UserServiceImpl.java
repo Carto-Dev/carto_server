@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public CartoUser getUser(Long userId) {
-        return this.cartoUserRepository.getById(userId);
+    public CartoUser getUser(String firebaseId) {
+        return this.cartoUserRepository.findByFirebaseId(firebaseId);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        CartoUser cartoUser = this.cartoUserRepository.findCartoUserByFirebaseId(userName);
+        CartoUser cartoUser = this.cartoUserRepository.findByFirebaseId(userName);
 
         if (cartoUser == null) {
             throw new UsernameNotFoundException("User does not exist for the given Firebase ID");

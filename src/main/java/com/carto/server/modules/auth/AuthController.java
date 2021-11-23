@@ -1,5 +1,6 @@
 package com.carto.server.modules.auth;
 
+import com.carto.server.annotation.LoggedInUser;
 import com.carto.server.dto.user.NewUserDto;
 import com.carto.server.exception.FirebaseException;
 import com.carto.server.exception.InternalServerErrorException;
@@ -8,10 +9,9 @@ import com.carto.server.modules.user.UserService;
 import com.google.firebase.auth.FirebaseAuthException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -33,6 +33,11 @@ public class AuthController {
             log.error(exception.getMessage());
             throw new InternalServerErrorException(500, "Something went wrong, please try again later.");
         }
+    }
+
+    @GetMapping(path = "/identity")
+    public CartoUser getLoggedInUser(@LoggedInUser CartoUser cartoUser) {
+        return cartoUser;
     }
 
 }

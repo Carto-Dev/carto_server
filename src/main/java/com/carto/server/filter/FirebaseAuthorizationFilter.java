@@ -26,7 +26,7 @@ public class FirebaseAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getServletPath().equals("/api/v1/auth/register")) {
+        if (request.getServletPath().equals("/v1/auth/register")) {
             filterChain.doFilter(request, response);
         } else {
 

@@ -8,7 +8,7 @@ public interface UserService {
 
     CartoUser saveNewUser(NewUserDto newUserDto) throws FirebaseAuthException;
 
-    CartoUser getUser(Long userId);
+    CartoUser getUser(String firebaseId);
 
     CartoUser updateUser(CartoUser cartoUser);
 

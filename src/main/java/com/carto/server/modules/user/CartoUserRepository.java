@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CartoUserRepository extends JpaRepository<CartoUser, Long> {
 
-    CartoUser findCartoUserByFirebaseId(String firebaseId);
+    CartoUser findByFirebaseId(String firebaseId);
 
 }
