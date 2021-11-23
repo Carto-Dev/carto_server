@@ -18,7 +18,7 @@ public class NewUserDto {
     private String displayName;
 
     @NotEmpty(message = "Email address should not be empty.")
-    @Email(message = "Email address is not valid.")
+    @Email(message = "Provided email address is invalid.")
     private String emailAddress;
 
     @NotEmpty(message = "Password should not be empty.")
