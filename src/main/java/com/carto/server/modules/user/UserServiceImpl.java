@@ -22,10 +22,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final CartoUserRepository cartoUserRepository;
 
-    private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
     @Override
     public CartoUser saveNewUser(NewUserDto newUserDto) throws FirebaseAuthException {
+
+        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest()
                 .setDisplayName(newUserDto.getDisplayName())
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .setPassword(newUserDto.getPassword())
                 .setDisabled(false);
 
-        UserRecord userRecord = this.firebaseAuth.createUser(createRequest);
+        UserRecord userRecord = firebaseAuth.createUser(createRequest);
 
         CartoUser newCartoUser = new CartoUser();
         newCartoUser.setDisplayName(userRecord.getDisplayName());
