@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ControllerAdvice
@@ -16,7 +17,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleFirebaseException(FirebaseException firebaseException) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(firebaseException.getErrorCode(), firebaseException.getErrorMessage());
 
-        return new ResponseEntity<>(exceptionResponse, INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exceptionResponse, CONFLICT);
     }
 
     @ExceptionHandler(InternalServerErrorException.class)

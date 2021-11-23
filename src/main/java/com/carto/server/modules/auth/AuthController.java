@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/auth")
+@RequestMapping(path = "v1/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -28,7 +28,7 @@ public class AuthController {
         try {
             return this.userService.saveNewUser(newUserDto);
         } catch (FirebaseAuthException exception) {
-            throw new FirebaseException(500, exception.getMessage());
+            throw new FirebaseException(409, exception.getAuthErrorCode().toString());
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new InternalServerErrorException(500, "Something went wrong, please try again later.");
