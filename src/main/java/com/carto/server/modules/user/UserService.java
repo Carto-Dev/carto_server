@@ -1,6 +1,8 @@
 package com.carto.server.modules.user;
 
+import com.carto.server.annotation.LoggedInUser;
 import com.carto.server.dto.user.NewUserDto;
+import com.carto.server.dto.user.UpdateUserDto;
 import com.carto.server.model.CartoUser;
 import com.google.firebase.auth.FirebaseAuthException;
 
@@ -10,7 +12,7 @@ public interface UserService {
 
     CartoUser getUser(String firebaseId);
 
-    CartoUser updateUser(CartoUser cartoUser);
+    CartoUser updateUser(CartoUser cartoUser, UpdateUserDto updateUserDto);
 
     void deleteUser(CartoUser cartoUser);
 
