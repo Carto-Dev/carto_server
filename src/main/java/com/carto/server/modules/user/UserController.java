@@ -5,10 +5,7 @@ import com.carto.server.dto.user.UpdateUserDto;
 import com.carto.server.model.CartoUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,6 +20,11 @@ public class UserController {
     @PutMapping()
     public CartoUser updateUser(@LoggedInUser CartoUser cartoUser, @Valid @RequestBody UpdateUserDto updateUserDto) {
         return this.userService.updateUser(cartoUser, updateUserDto);
+    }
+
+    @DeleteMapping()
+    public void deleteUser(@LoggedInUser CartoUser cartoUser) {
+        this.userService.deleteUser(cartoUser);
     }
 
 }
