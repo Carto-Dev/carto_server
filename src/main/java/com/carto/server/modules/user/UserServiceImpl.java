@@ -57,7 +57,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void deleteUser(CartoUser cartoUser) {
-        
         this.cartoUserRepository.delete(cartoUser);
     }
 
