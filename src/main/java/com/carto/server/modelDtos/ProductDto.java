@@ -1,7 +1,6 @@
 package com.carto.server.modelDtos;
 
-import com.carto.server.model.Product;
-import com.carto.server.model.ProductImage;
+import com.carto.server.model.Product
 import lombok.Data;
 
 import java.util.List;
