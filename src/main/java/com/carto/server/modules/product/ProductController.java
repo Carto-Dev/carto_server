@@ -26,6 +26,18 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping(path = "category")
+    Set<ProductDto> fetchProductsByCategory(@Valid @RequestParam(name = "category") String category) throws NotFoundException {
+        Set<Product> products = this.productService.fetchProductsByCategory(category);
+
+        return products.stream().map(product -> {
+            ProductDto productDto = new ProductDto();
+            productDto.convertToDto(product);
+
+            return productDto;
+        }).collect(Collectors.toSet());
+    }
+
     @GetMapping(path = "user")
     Set<ProductDto> fetchProductsByUser(@Valid @RequestParam(name = "userId") Long userId) throws NotFoundException {
         Set<Product> products = this.productService.fetchProductsByUser(userId);
