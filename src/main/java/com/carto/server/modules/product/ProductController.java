@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "v1/product")
@@ -22,6 +24,18 @@ public class ProductController {
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
+    }
+
+    @GetMapping(path = "new")
+    Set<ProductDto> fetchNewProducts() {
+        Set<Product> products = this.productService.fetchNewProducts();
+
+        return products.stream().map(product -> {
+            ProductDto productDto = new ProductDto();
+            productDto.convertToDto(product);
+
+            return productDto;
+        }).collect(Collectors.toSet());
     }
 
     @PostMapping
@@ -48,5 +62,4 @@ public class ProductController {
     public void deleteProduct(@LoggedInUser CartoUser cartoUser, @Valid @RequestBody DeleteProductDto deleteProductDto) throws NotFoundException {
         this.productService.deleteProduct(cartoUser, deleteProductDto);
     }
-
 }
