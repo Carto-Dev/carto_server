@@ -9,6 +9,6 @@ import java.util.List;
 public class MinArraySizeValidator implements ConstraintValidator<MinArraySize, List<String>> {
     @Override
     public boolean isValid(List<String> strings, ConstraintValidatorContext constraintValidatorContext) {
-        return strings.size() > 0;
+        return strings != null && strings.size() > 0;
     }
 }

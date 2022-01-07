@@ -1,14 +1,16 @@
 package com.carto.server.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductCategory {
@@ -26,5 +28,4 @@ public class ProductCategory {
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Product> products;
-
 }

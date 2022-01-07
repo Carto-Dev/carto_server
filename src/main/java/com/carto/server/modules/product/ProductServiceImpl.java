@@ -14,8 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductCategoryService, ProductService {
 
     private final ProductCategoryRepository productCategoryRepository;
@@ -48,19 +48,11 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
 
     @Override
     public Product createProduct(CartoUser cartoUser, NewProductDto newProductDto) throws NotFoundException {
+
         Set<ProductCategory> productCategories = new HashSet<>();
-        Set<ProductImage> productImages = new HashSet<>();
 
         for (String category : newProductDto.getCategories()) {
             productCategories.add(this.fetchCategory(category));
-        }
-
-        for (String imgLink : newProductDto.getImgLinks()) {
-            ProductImage productImage = this.productImageRepository.save(
-                    new ProductImage(null, imgLink, null)
-            );
-
-            productImages.add(productImage);
         }
 
         Product product = new Product(
@@ -68,12 +60,19 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
                 cartoUser,
                 newProductDto.getTitle(),
                 newProductDto.getDescription(),
-                newProductDto.getCost(),
-                productImages,
+                newProductDto.getCost().doubleValue(),
+                new HashSet<>(),
                 productCategories,
                 null,
                 null
         );
+
+        for (String imgLink : newProductDto.getImgLinks()) {
+            ProductImage newProductImage = new ProductImage(null, imgLink, null);
+            newProductImage.setProduct(product);
+
+            product.getImgLinks().add(newProductImage);
+        }
 
         return this.productRepository.save(product);
     }
