@@ -49,6 +49,11 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
     }
 
     @Override
+    public Set<Product> fetchNewProducts() {
+        return this.productRepository.findByOrderByCreatedAtDesc();
+    }
+
+    @Override
     public Product createProduct(CartoUser cartoUser, NewProductDto newProductDto) throws NotFoundException {
 
         Set<ProductCategory> productCategories = new HashSet<>();

@@ -7,7 +7,11 @@ import com.carto.server.exception.NotFoundException;
 import com.carto.server.model.CartoUser;
 import com.carto.server.model.Product;
 
+import java.util.Set;
+
 public interface ProductService {
+
+    Set<Product> fetchNewProducts();
 
     Product createProduct(CartoUser cartoUser, NewProductDto newProductDto) throws NotFoundException;
 
