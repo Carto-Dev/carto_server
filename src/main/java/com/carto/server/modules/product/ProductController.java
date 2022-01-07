@@ -8,7 +8,7 @@ import com.carto.server.modelDtos.ProductDto;
 import com.carto.server.exception.NotFoundException;
 import com.carto.server.model.CartoUser;
 import com.carto.server.model.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,14 +17,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "v1/product")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @GetMapping(path = "category")
     Set<ProductDto> fetchProductsByCategory(@Valid @RequestParam(name = "category") String category) throws NotFoundException {
