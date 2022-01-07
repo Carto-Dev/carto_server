@@ -2,6 +2,7 @@ package com.carto.server.modules.product;
 
 import com.carto.server.annotation.LoggedInUser;
 import com.carto.server.dto.product.DeleteProductDto;
+import com.carto.server.dto.product.FetchProductsByUserDto;
 import com.carto.server.dto.product.NewProductDto;
 import com.carto.server.dto.product.UpdateProductDto;
 import com.carto.server.modelDtos.ProductDto;
@@ -24,6 +25,18 @@ public class ProductController {
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
+    }
+
+    @GetMapping(path = "user")
+    Set<ProductDto> fetchProductsByUser(@Valid @RequestParam(name = "userId") Long userId) throws NotFoundException {
+        Set<Product> products = this.productService.fetchProductsByUser(userId);
+
+        return products.stream().map(product -> {
+            ProductDto productDto = new ProductDto();
+            productDto.convertToDto(product);
+
+            return productDto;
+        }).collect(Collectors.toSet());
     }
 
     @GetMapping(path = "new")
