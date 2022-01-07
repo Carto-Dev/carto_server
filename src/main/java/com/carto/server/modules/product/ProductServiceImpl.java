@@ -1,5 +1,6 @@
 package com.carto.server.modules.product;
 
+import com.carto.server.dto.product.DeleteProductDto;
 import com.carto.server.dto.product.NewProductDto;
 import com.carto.server.dto.product.UpdateProductDto;
 import com.carto.server.exception.NotFoundException;
@@ -110,5 +111,16 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
         oldProduct.setCategories(productCategories);
 
         return this.productRepository.save(oldProduct);
+    }
+
+    @Override
+    public void deleteProduct(CartoUser cartoUser, DeleteProductDto deleteProductDto) throws NotFoundException {
+        Product oldProduct = this.productRepository.findProductByIdAndUser(deleteProductDto.getId(), cartoUser);
+
+        if (oldProduct == null) {
+            throw new NotFoundException(404, "Product not found");
+        }
+
+        this.productRepository.delete(oldProduct);
     }
 }
