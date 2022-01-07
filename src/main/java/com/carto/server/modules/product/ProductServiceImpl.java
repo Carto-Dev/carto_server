@@ -68,6 +68,13 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
     }
 
     @Override
+    public Set<Product> fetchProductsByCategory(String category) throws NotFoundException {
+        ProductCategory productCategory = this.fetchCategory(category);
+
+        return productCategory.getProducts();
+    }
+
+    @Override
     public Product createProduct(CartoUser cartoUser, NewProductDto newProductDto) throws NotFoundException {
 
         Set<ProductCategory> productCategories = new HashSet<>();
