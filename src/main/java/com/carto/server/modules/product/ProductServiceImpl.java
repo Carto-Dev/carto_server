@@ -1,6 +1,7 @@
 package com.carto.server.modules.product;
 
 import com.carto.server.dto.product.NewProductDto;
+import com.carto.server.dto.product.UpdateProductDto;
 import com.carto.server.exception.NotFoundException;
 import com.carto.server.model.CartoUser;
 import com.carto.server.model.Product;
@@ -75,5 +76,32 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
         }
 
         return this.productRepository.save(product);
+    }
+
+    @Override
+    public Product updateProduct(CartoUser cartoUser, UpdateProductDto updateProductDto) throws NotFoundException {
+        Product oldProduct = this.productRepository.findProductByIdAndUser(updateProductDto.getId(), cartoUser);
+
+        Set<ProductCategory> productCategories = new HashSet<>();
+        Set<ProductImage> productImages = new HashSet<>();
+
+        for (String category : updateProductDto.getCategories()) {
+            productCategories.add(this.fetchCategory(category));
+        }
+
+        for (String imgLink : updateProductDto.getImgLinks()) {
+            ProductImage newProductImage = new ProductImage(null, imgLink, null);
+            newProductImage.setProduct(oldProduct);
+
+            productImages.add(newProductImage);
+        }
+
+        oldProduct.setTitle(updateProductDto.getTitle());
+        oldProduct.setDescription(updateProductDto.getDescription());
+        oldProduct.setCost(updateProductDto.getCost().doubleValue());
+        oldProduct.setImgLinks(productImages);
+        oldProduct.setCategories(productCategories);
+
+        return this.productRepository.save(oldProduct);
     }
 }
