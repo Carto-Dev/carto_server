@@ -1,5 +1,6 @@
 package com.carto.server.modules.product;
 
+import com.carto.server.exception.NotFoundException;
 import com.carto.server.model.ProductCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,16 @@ public class ProductServiceImpl implements ProductCategoryService {
             }
         });
 
+    }
+
+    @Override
+    public ProductCategory fetchCategory(String categoryKey) throws NotFoundException {
+        ProductCategory checkCategory = productCategoryRepository.findByKey(categoryKey);
+
+        if (checkCategory == null) {
+            throw new NotFoundException(404, "Category not found");
+        } else {
+            return checkCategory;
+        }
     }
 }
