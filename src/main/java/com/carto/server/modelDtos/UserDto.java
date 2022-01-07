@@ -1,4 +1,4 @@
-package com.carto.server.dto.user;
+package com.carto.server.modelDtos;
 
 import com.carto.server.model.CartoUser;
 import lombok.Data;

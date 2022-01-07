@@ -2,7 +2,7 @@ package com.carto.server.modules.user;
 
 import com.carto.server.annotation.LoggedInUser;
 import com.carto.server.dto.user.UpdateUserDto;
-import com.carto.server.dto.user.UserDto;
+import com.carto.server.modelDtos.UserDto;
 import com.carto.server.model.CartoUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.carto.server.dto.product;
+package com.carto.server.modelDtos;
 
 import com.carto.server.model.ProductCategory;
 import lombok.Data;

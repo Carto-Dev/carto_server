@@ -1,6 +1,5 @@
-package com.carto.server.dto.product;
+package com.carto.server.modelDtos;
 
-import com.carto.server.dto.user.UserDto;
 import com.carto.server.model.Product;
 import com.carto.server.model.ProductImage;
 import lombok.Data;

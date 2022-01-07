@@ -2,7 +2,7 @@ package com.carto.server.modules.product;
 
 import com.carto.server.annotation.LoggedInUser;
 import com.carto.server.dto.product.NewProductDto;
-import com.carto.server.dto.product.ProductDto;
+import com.carto.server.modelDtos.ProductDto;
 import com.carto.server.exception.NotFoundException;
 import com.carto.server.model.CartoUser;
 import com.carto.server.model.Product;
