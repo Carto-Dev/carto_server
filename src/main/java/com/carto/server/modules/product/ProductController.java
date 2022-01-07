@@ -2,7 +2,6 @@ package com.carto.server.modules.product;
 
 import com.carto.server.annotation.LoggedInUser;
 import com.carto.server.dto.product.DeleteProductDto;
-import com.carto.server.dto.product.FetchProductsByUserDto;
 import com.carto.server.dto.product.NewProductDto;
 import com.carto.server.dto.product.UpdateProductDto;
 import com.carto.server.modelDtos.ProductDto;
