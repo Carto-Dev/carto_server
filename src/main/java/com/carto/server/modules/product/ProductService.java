@@ -13,6 +13,8 @@ public interface ProductService {
 
     Set<Product> fetchNewProducts();
 
+    Set<Product> fetchProductsByUser(Long userId) throws NotFoundException;
+
     Product createProduct(CartoUser cartoUser, NewProductDto newProductDto) throws NotFoundException;
 
     Product updateProduct(CartoUser cartoUser, UpdateProductDto updateProductDto) throws NotFoundException;

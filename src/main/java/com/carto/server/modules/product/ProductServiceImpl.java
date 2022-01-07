@@ -8,11 +8,13 @@ import com.carto.server.model.CartoUser;
 import com.carto.server.model.Product;
 import com.carto.server.model.ProductCategory;
 import com.carto.server.model.ProductImage;
+import com.carto.server.modules.user.CartoUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -23,6 +25,7 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
+    private final CartoUserRepository cartoUserRepository;
 
     @Override
     public void loadCategories(Set<ProductCategory> categories) {
@@ -51,6 +54,17 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
     @Override
     public Set<Product> fetchNewProducts() {
         return this.productRepository.findByOrderByCreatedAtDesc();
+    }
+
+    @Override
+    public Set<Product> fetchProductsByUser(Long userId) throws NotFoundException {
+        Optional<CartoUser> cartoUserOptional = this.cartoUserRepository.findById(userId);
+
+        if (cartoUserOptional.isEmpty()) {
+            throw new NotFoundException(404, "User not found");
+        } else {
+            return this.productRepository.findProductsByUser(cartoUserOptional.get());
+        }
     }
 
     @Override
