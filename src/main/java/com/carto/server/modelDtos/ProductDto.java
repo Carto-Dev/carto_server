@@ -14,7 +14,7 @@ public class ProductDto {
     private String title;
     private String description;
     private double cost;
-    private List<String> images;
+    private List<ImageDto> images;
     private List<CategoryDto> categories;
 
     public void convertToDto(Product product) {
@@ -27,7 +27,13 @@ public class ProductDto {
         this.title = product.getTitle();
         this.description = product.getDescription();
         this.cost = product.getCost();
-        this.images = product.getImgLinks().stream().map(ProductImage::getImg).collect(Collectors.toList());
+        this.images = product.getImgLinks().stream().map(img -> {
+            ImageDto imageDto = new ImageDto();
+
+            imageDto.convertToDto(img);
+
+            return imageDto;
+        }).collect(Collectors.toList());
         this.categories = product.getCategories().stream().map(productCategory -> {
             CategoryDto categoryDto = new CategoryDto();
 

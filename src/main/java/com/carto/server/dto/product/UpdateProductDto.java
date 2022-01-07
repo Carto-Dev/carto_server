@@ -18,7 +18,6 @@ import java.util.List;
 public class UpdateProductDto {
 
     @NotNull(message = "ID is required")
-    @NotEmpty(message = "ID is required")
     private Long id;
 
     @NotNull(message = "Title is required")

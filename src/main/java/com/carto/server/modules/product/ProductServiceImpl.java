@@ -82,6 +82,13 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
     public Product updateProduct(CartoUser cartoUser, UpdateProductDto updateProductDto) throws NotFoundException {
         Product oldProduct = this.productRepository.findProductByIdAndUser(updateProductDto.getId(), cartoUser);
 
+        if (oldProduct == null) {
+            throw new NotFoundException(404, "Product not found");
+        }
+
+        Set<ProductImage> oldProductImages = this.productImageRepository.findAllByProduct(oldProduct);
+        this.productImageRepository.deleteAll(oldProductImages);
+
         Set<ProductCategory> productCategories = new HashSet<>();
         Set<ProductImage> productImages = new HashSet<>();
 
