@@ -14,4 +14,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Set<Product> findByOrderByCreatedAtDesc();
 
+    Set<Product> findProductsByUser(CartoUser cartoUser);
+
 }
