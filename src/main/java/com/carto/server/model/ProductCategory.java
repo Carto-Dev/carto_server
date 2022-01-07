@@ -13,15 +13,19 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartoUser {
+public class ProductCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String firebaseId;
-    private String displayName;
+    private String text;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(unique = true)
+    private String key;
+
+    private String img;
+
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Product> products;
 }
