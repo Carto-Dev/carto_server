@@ -8,6 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
+import java.util.Set;
+
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
@@ -32,6 +37,23 @@ public class GlobalExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(notFoundException.getErrorCode(), notFoundException.getErrorMessage());
 
         return new ResponseEntity<>(exceptionResponse, NOT_FOUND);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ExceptionResponse> handle(ConstraintViolationException constraintViolationException) {
+        Set<ConstraintViolation<?>> violations = constraintViolationException.getConstraintViolations();
+        String errorMessage = "";
+        if (!violations.isEmpty()) {
+            StringBuilder builder = new StringBuilder();
+            violations.forEach(violation -> builder.append(" ").append(violation.getMessage()));
+            errorMessage = builder.toString();
+        } else {
+            errorMessage = "ConstraintViolationException occured.";
+        }
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(400, errorMessage);
+
+        return new ResponseEntity<>(exceptionResponse, BAD_REQUEST);
     }
 
 }
