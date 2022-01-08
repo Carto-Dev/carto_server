@@ -1,1 +1,1 @@
-mvn install -DskipTests && docker-compose up --build
+mvn install -DskipTests && docker compose up --build
