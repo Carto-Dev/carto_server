@@ -10,6 +10,9 @@ import javax.validation.constraints.Size;
 @Data
 public class NewReviewDto {
 
+    @NotNull(message = "Product ID is required")
+    private Long productId;
+
     @NotNull(message = "Review is required")
     @NotEmpty(message = "Review is required")
     @Size(min = 5, message = "Review should have at least 5 characters.")
