@@ -1,5 +1,6 @@
 package com.carto.server.modules.review;
 
+import com.carto.server.dto.review.DeleteReviewDto;
 import com.carto.server.dto.review.NewReviewDto;
 import com.carto.server.dto.review.UpdateReviewDto;
 import com.carto.server.exception.NotFoundException;
@@ -51,6 +52,17 @@ public class ReviewServiceImpl implements ReviewService {
             review.setText(updateReviewDto.getText());
 
             return this.reviewRepository.save(review);
+        }
+    }
+
+    @Override
+    public void deleteReview(CartoUser cartoUser, DeleteReviewDto deleteReviewDto) throws NotFoundException {
+        Optional<Review> checkReview = this.reviewRepository.findByIdAndUser(deleteReviewDto.getId(), cartoUser);
+
+        if (checkReview.isEmpty()) {
+            throw new NotFoundException(404, "Review Not Found");
+        } else {
+            this.reviewRepository.delete(checkReview.get());
         }
     }
 }
