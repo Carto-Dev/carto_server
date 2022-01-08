@@ -14,7 +14,7 @@ public class ReviewDto {
     public void convertToDto(Review review) {
         this.id = review.getId();
         this.text = review.getText();
-        this.stars = review.getId();
+        this.stars = review.getStars();
 
         UserDto userDto = new UserDto();
         userDto.convertToDto(review.getUser());
