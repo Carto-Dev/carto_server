@@ -7,7 +7,6 @@ import com.carto.server.model.CartoUser;
 import com.carto.server.model.Product;
 import com.carto.server.model.Review;
 import com.carto.server.modules.product.ProductRepository;
-import com.carto.server.modules.user.CartoUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
