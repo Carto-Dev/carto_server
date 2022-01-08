@@ -1,6 +1,7 @@
 package com.carto.server.modules.review;
 
 import com.carto.server.annotation.LoggedInUser;
+import com.carto.server.dto.review.DeleteReviewDto;
 import com.carto.server.dto.review.NewReviewDto;
 import com.carto.server.dto.review.UpdateReviewDto;
 import com.carto.server.exception.NotFoundException;
@@ -37,6 +38,11 @@ public class ReviewController {
         reviewDto.convertToDto(savedReview);
 
         return reviewDto;
+    }
+
+    @DeleteMapping
+    public void deleteReview(@LoggedInUser CartoUser cartoUser, @Valid @RequestBody DeleteReviewDto deleteReviewDto) throws NotFoundException {
+        this.reviewService.deleteReview(cartoUser, deleteReviewDto);
     }
 
 }
