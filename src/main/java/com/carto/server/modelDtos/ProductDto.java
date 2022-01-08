@@ -14,6 +14,7 @@ public class ProductDto {
     private String description;
     private double cost;
     private List<ImageDto> images;
+    private List<ReviewDto> reviews;
     private List<CategoryDto> categories;
 
     public void convertToDto(Product product) {
@@ -26,6 +27,7 @@ public class ProductDto {
         this.title = product.getTitle();
         this.description = product.getDescription();
         this.cost = product.getCost();
+
         this.images = product.getImgLinks().stream().map(img -> {
             ImageDto imageDto = new ImageDto();
 
@@ -33,6 +35,15 @@ public class ProductDto {
 
             return imageDto;
         }).collect(Collectors.toList());
+
+        this.reviews = product.getReviews().stream().map(review -> {
+            ReviewDto reviewDto = new ReviewDto();
+
+            reviewDto.convertToDto(review);
+
+            return reviewDto;
+        }).collect(Collectors.toList());
+
         this.categories = product.getCategories().stream().map(productCategory -> {
             CategoryDto categoryDto = new CategoryDto();
 

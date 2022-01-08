@@ -96,6 +96,7 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
                 newProductDto.getDescription(),
                 newProductDto.getCost().doubleValue(),
                 new HashSet<>(),
+                new HashSet<>(),
                 productCategories,
                 null,
                 null
