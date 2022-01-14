@@ -58,6 +58,17 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
     }
 
     @Override
+    public Product fetchProductById(Long id) throws NotFoundException {
+        Optional<Product> product = this.productRepository.findById(id);
+
+        if (product.isEmpty()) {
+            throw new NotFoundException(404, "Order Not Found");
+        } else {
+            return product.get();
+        }
+    }
+
+    @Override
     public Set<Product> fetchNewProducts() {
         return this.productRepository.findByOrderByCreatedAtDesc();
     }
@@ -97,6 +108,7 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
                 newProductDto.getCost().doubleValue(),
                 new HashSet<>(),
                 new HashSet<>(),
+                null,
                 productCategories,
                 null,
                 null
