@@ -11,6 +11,8 @@ import java.util.Set;
 
 public interface ProductService {
 
+    Product fetchProductById(Long id) throws NotFoundException;
+
     Set<Product> fetchNewProducts();
 
     Set<Product> fetchProductsByUser(Long userId) throws NotFoundException;
