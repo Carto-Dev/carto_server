@@ -36,4 +36,9 @@ public class OrderServiceImpl implements OrderService {
         return this.orderRepository.save(order);
     }
 
+    @Override
+    public Set<Order> fetchOrdersByUser(CartoUser cartoUser) {
+        return cartoUser.getOrders();
+    }
+
 }
