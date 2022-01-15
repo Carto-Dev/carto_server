@@ -8,6 +8,7 @@ import com.carto.server.model.CartoUser;
 import com.carto.server.model.Product;
 import com.carto.server.model.ProductCategory;
 import com.carto.server.model.ProductImage;
+import com.carto.server.modules.search.SearchService;
 import com.carto.server.modules.user.CartoUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,8 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final CartoUserRepository cartoUserRepository;
+
+    private final SearchService searchService;
 
     @Override
     public void loadCategories(Set<ProductCategory> categories) {
@@ -121,7 +124,11 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
             product.getImgLinks().add(newProductImage);
         }
 
-        return this.productRepository.save(product);
+        Product savedProduct = this.productRepository.save(product);
+
+        this.searchService.addProduct(savedProduct);
+
+        return savedProduct;
     }
 
     @Override
