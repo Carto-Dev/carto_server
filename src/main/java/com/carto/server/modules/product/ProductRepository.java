@@ -16,4 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Set<Product> findProductsByUser(CartoUser cartoUser);
 
+    Set<Product> findProductsByIdIn(Set<Long> ids);
+
 }
