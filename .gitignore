@@ -34,3 +34,4 @@ build/
 
 ### SECRETS ###
 server-config.env
+server-config.prod.env
