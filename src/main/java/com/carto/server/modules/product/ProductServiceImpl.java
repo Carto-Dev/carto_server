@@ -126,7 +126,7 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
 
         Product savedProduct = this.productRepository.save(product);
 
-        this.searchService.addProduct(savedProduct);
+        this.searchService.addOrUpdateProduct(savedProduct);
 
         return savedProduct;
     }
@@ -162,7 +162,11 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
         oldProduct.setImgLinks(productImages);
         oldProduct.setCategories(productCategories);
 
-        return this.productRepository.save(oldProduct);
+        Product savedProduct = this.productRepository.save(oldProduct);
+
+        this.searchService.addOrUpdateProduct(savedProduct);
+
+        return savedProduct;
     }
 
     @Override

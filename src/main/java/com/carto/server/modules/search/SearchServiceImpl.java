@@ -16,7 +16,7 @@ public class SearchServiceImpl implements SearchService {
     private final AlgoliaService algoliaService;
 
     @Override
-    public AlgoliaProductDto addProduct(Product product) {
+    public void addOrUpdateProduct(Product product) {
         AlgoliaProductDto algoliaProductDto = new AlgoliaProductDto()
                 .setObjectID(product.getId().toString())
                 .setTitle(product.getTitle())
@@ -24,6 +24,5 @@ public class SearchServiceImpl implements SearchService {
 
         this.algoliaService.getProductIndex().saveObject(algoliaProductDto);
 
-        return algoliaProductDto;
     }
 }
