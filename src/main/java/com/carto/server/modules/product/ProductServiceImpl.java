@@ -177,6 +177,8 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
             throw new NotFoundException(404, "Product not found");
         }
 
+        this.searchService.deleteProduct(oldProduct);
+
         this.productRepository.delete(oldProduct);
     }
 }

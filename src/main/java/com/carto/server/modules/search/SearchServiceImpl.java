@@ -25,4 +25,9 @@ public class SearchServiceImpl implements SearchService {
         this.algoliaService.getProductIndex().saveObject(algoliaProductDto);
 
     }
+
+    @Override
+    public void deleteProduct(Product product) {
+        this.algoliaService.getProductIndex().deleteObject(product.getId().toString());
+    }
 }

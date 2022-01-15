@@ -6,4 +6,6 @@ public interface SearchService {
 
     void addOrUpdateProduct(Product product);
 
+    void deleteProduct(Product product);
+
 }
