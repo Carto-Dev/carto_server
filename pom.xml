@@ -71,6 +71,12 @@
             <version>8.1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.algolia</groupId>
+            <artifactId>algoliasearch-apache-uber</artifactId>
+            <version>3.16.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
