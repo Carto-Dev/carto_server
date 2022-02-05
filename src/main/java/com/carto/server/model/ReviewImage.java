@@ -16,7 +16,7 @@ public class ReviewImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
     private String img;
 
     @ManyToOne(fetch = FetchType.LAZY)
