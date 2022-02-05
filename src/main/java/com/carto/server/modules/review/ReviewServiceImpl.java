@@ -24,6 +24,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
+    private final ReviewImageRepository reviewImageRepository;
 
     @Override
     public Review createReview(CartoUser cartoUser, NewReviewDto newReviewDto) throws NotFoundException {
@@ -60,6 +61,18 @@ public class ReviewServiceImpl implements ReviewService {
             throw new NotFoundException(404, "Review Not Found");
         } else {
             Review review = checkReview.get();
+
+            if (review.getImgLinks() != null) {
+                this.reviewImageRepository.deleteAll(review.getImgLinks());
+            }
+
+            review.setImgLinks(new HashSet<>());
+
+            updateReviewDto.getImgLinks().forEach(img -> {
+                ReviewImage reviewImage = new ReviewImage(null, img, review);
+
+                review.getImgLinks().add(reviewImage);
+            });
 
             review.setStars(updateReviewDto.getStars());
             review.setText(updateReviewDto.getText());
