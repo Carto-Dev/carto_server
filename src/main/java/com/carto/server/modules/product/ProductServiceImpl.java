@@ -62,12 +62,12 @@ public class ProductServiceImpl implements ProductCategoryService, ProductServic
 
     @Override
     public Product fetchProductById(Long id) throws NotFoundException {
-        Optional<Product> product = this.productRepository.findById(id);
+        Optional<Product> productOptional = this.productRepository.findById(id);
 
-        if (product.isEmpty()) {
+        if (productOptional.isEmpty()) {
             throw new NotFoundException(404, "Order Not Found");
         } else {
-            return product.get();
+            return productOptional.get();
         }
     }
 
