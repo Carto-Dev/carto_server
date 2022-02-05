@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -32,7 +33,7 @@ public class ReviewServiceImpl implements ReviewService {
         } else {
             Product product = checkProduct.get();
 
-            Review review = new Review(null, newReviewDto.getText(), newReviewDto.getStars(), product, cartoUser);
+            Review review = new Review(null, newReviewDto.getText(), newReviewDto.getStars(), product, cartoUser, new HashSet<>());
 
             return this.reviewRepository.save(review);
         }
