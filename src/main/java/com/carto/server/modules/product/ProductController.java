@@ -22,6 +22,17 @@ public class ProductController {
 
     private final ProductService productService;
 
+    @GetMapping()
+    ProductDto fetchProductById(@Valid @RequestParam(name = "id") Long id) throws NotFoundException {
+        Product product = this.productService.fetchProductById(id);
+
+
+        ProductDto productDto = new ProductDto();
+        productDto.convertToDto(product);
+
+        return productDto;
+    }
+
     @GetMapping(path = "category")
     Set<ProductDto> fetchProductsByCategory(@Valid @RequestParam(name = "category") String category) throws NotFoundException {
         Set<Product> products = this.productService.fetchProductsByCategory(category);
