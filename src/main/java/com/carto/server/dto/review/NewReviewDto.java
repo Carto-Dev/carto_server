@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Data
 public class NewReviewDto {
@@ -21,5 +22,7 @@ public class NewReviewDto {
     @NotNull(message = "Stars is required")
     @Range(min = 0, max = 5)
     private Long stars;
+
+    private List<String> imgLinks;
 
 }
