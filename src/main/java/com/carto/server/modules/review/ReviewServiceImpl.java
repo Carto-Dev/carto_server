@@ -7,6 +7,7 @@ import com.carto.server.exception.NotFoundException;
 import com.carto.server.model.CartoUser;
 import com.carto.server.model.Product;
 import com.carto.server.model.Review;
+import com.carto.server.model.ReviewImage;
 import com.carto.server.modules.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -32,9 +34,19 @@ public class ReviewServiceImpl implements ReviewService {
             throw new NotFoundException(404, "Product Not Found");
         } else {
             Product product = checkProduct.get();
+            Set<ReviewImage> reviewImages = new HashSet<>();
 
             Review review = new Review(null, newReviewDto.getText(), newReviewDto.getStars(), product, cartoUser, new HashSet<>());
 
+            if (newReviewDto.getImgLinks() != null) {
+                newReviewDto.getImgLinks().forEach(img -> {
+                    ReviewImage reviewImage = new ReviewImage(null, img, review);
+
+                    reviewImages.add(reviewImage);
+                });
+
+                review.setImgLinks(reviewImages);
+            }
             return this.reviewRepository.save(review);
         }
 
