@@ -5,6 +5,7 @@ import com.carto.server.dto.user.NewUserDto;
 import com.carto.server.exception.FirebaseException;
 import com.carto.server.exception.InternalServerErrorException;
 import com.carto.server.model.CartoUser;
+import com.carto.server.modelDtos.UserDto;
 import com.carto.server.modules.user.UserService;
 import com.google.firebase.auth.FirebaseAuthException;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +37,12 @@ public class AuthController {
     }
 
     @GetMapping(path = "/identity")
-    public CartoUser getLoggedInUser(@LoggedInUser CartoUser cartoUser) {
-        return cartoUser;
+    public UserDto getLoggedInUser(@LoggedInUser CartoUser cartoUser) {
+
+        UserDto userDto = new UserDto();
+        userDto.convertToDto(cartoUser);
+
+        return userDto;
     }
 
 }
