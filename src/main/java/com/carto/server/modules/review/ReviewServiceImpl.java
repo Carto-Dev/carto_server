@@ -27,6 +27,13 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewImageRepository reviewImageRepository;
 
     @Override
+    public Set<Review> fetchReviewsByUser(CartoUser cartoUser) {
+        Optional<Set<Review>> userReviews = this.reviewRepository.findReviewsByUser(cartoUser);
+
+        return userReviews.orElseGet(HashSet::new);
+    }
+
+    @Override
     public Review createReview(CartoUser cartoUser, NewReviewDto newReviewDto) throws NotFoundException {
 
         Optional<Product> checkProduct = this.productRepository.findById(newReviewDto.getProductId());

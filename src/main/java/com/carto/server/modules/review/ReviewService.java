@@ -7,7 +7,11 @@ import com.carto.server.exception.NotFoundException;
 import com.carto.server.model.CartoUser;
 import com.carto.server.model.Review;
 
+import java.util.Set;
+
 public interface ReviewService {
+
+    public Set<Review> fetchReviewsByUser(CartoUser cartoUser);
 
     public Review createReview(CartoUser cartoUser, NewReviewDto newReviewDto) throws NotFoundException;
 

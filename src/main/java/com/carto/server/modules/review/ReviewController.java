@@ -8,10 +8,14 @@ import com.carto.server.exception.NotFoundException;
 import com.carto.server.model.CartoUser;
 import com.carto.server.model.Review;
 import com.carto.server.modelDtos.ReviewDto;
+import com.carto.server.modelDtos.UserReview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "v1/review")
@@ -19,6 +23,18 @@ import javax.validation.Valid;
 public class ReviewController {
 
     private final ReviewService reviewService;
+
+    @GetMapping
+    public List<UserReview> fetchReviewsByUser(@LoggedInUser CartoUser cartoUser) {
+        Set<Review> userReviews = this.reviewService.fetchReviewsByUser(cartoUser);
+
+        return userReviews.stream().map(review -> {
+            UserReview userReview = new UserReview();
+            userReview.convertToDto(review);
+
+            return userReview;
+        }).collect(Collectors.toList());
+    }
 
     @PostMapping
     public ReviewDto createReview(@LoggedInUser CartoUser cartoUser, @Valid @RequestBody NewReviewDto newReviewDto) throws NotFoundException {
