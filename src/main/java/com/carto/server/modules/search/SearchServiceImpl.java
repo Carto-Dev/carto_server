@@ -46,17 +46,34 @@ public class SearchServiceImpl implements SearchService {
                 .map(algoliaProductDto -> Long.parseLong(algoliaProductDto.getObjectID()))
                 .collect(Collectors.toSet());
 
+        Set<String> productCategories = new HashSet<>(searchDto.getCategories())
+                .stream()
+                .filter(category -> !category.equals("EMPTY"))
+                .collect(Collectors.toSet());
+
+        if (productCategories.isEmpty()) {
+            if (searchDto.getSortBy().equals("ASC")) {
+                return this
+                        .productRepository
+                        .findProductsByIdInOrderByCostAsc(productIds);
+            } else if (searchDto.getSortBy().equals("DESC")) {
+                return this
+                        .productRepository
+                        .findProductsByIdInOrderByCostDesc(productIds);
+            } else {
+                throw new NotFoundException(404, "Sort By Query Not Found");
+            }
+        }
+
         Set<ProductCategory> requiredCategories = this
                 .productCategoryRepository
-                .findAllByKeyIn(new HashSet<>(searchDto.getCategories()));
+                .findAllByKeyIn(productCategories);
 
         if (searchDto.getSortBy().equals("ASC")) {
-            System.out.println("ASC");
             return this
                     .productRepository
                     .findProductsByIdInAndCategoriesInOrderByCostAsc(productIds, requiredCategories);
         } else if (searchDto.getSortBy().equals("DESC")) {
-            System.out.println("DESC");
             return this
                     .productRepository
                     .findProductsByIdInAndCategoriesInOrderByCostDesc(productIds, requiredCategories);
