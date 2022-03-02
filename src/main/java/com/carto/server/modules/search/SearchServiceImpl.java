@@ -2,15 +2,20 @@ package com.carto.server.modules.search;
 
 import com.algolia.search.models.indexing.Query;
 import com.algolia.search.models.indexing.SearchResult;
+import com.carto.server.dto.search.SearchDto;
+import com.carto.server.exception.NotFoundException;
 import com.carto.server.model.Product;
+import com.carto.server.model.ProductCategory;
 import com.carto.server.modelDtos.AlgoliaProductDto;
 import com.carto.server.modules.algolia.AlgoliaService;
+import com.carto.server.modules.product.ProductCategoryRepository;
 import com.carto.server.modules.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,15 +28,16 @@ public class SearchServiceImpl implements SearchService {
 
     private final AlgoliaService algoliaService;
     private final ProductRepository productRepository;
+    private final ProductCategoryRepository productCategoryRepository;
 
     @Override
-    public Set<Product> searchForProducts(String query) {
-        log.info("Searching For Products: " + query + " in Algolia");
+    public Set<Product> searchForProducts(SearchDto searchDto) throws NotFoundException {
+        log.info("Searching For Products: " + searchDto.getQuery() + " in Algolia");
 
         SearchResult<AlgoliaProductDto> searchResult = this
                 .algoliaService
                 .getProductIndex()
-                .search(new Query(query));
+                .search(new Query(searchDto.getQuery()));
 
         Set<AlgoliaProductDto> algoliaProductDtos = new HashSet<>(searchResult.getHits());
 
@@ -40,7 +46,23 @@ public class SearchServiceImpl implements SearchService {
                 .map(algoliaProductDto -> Long.parseLong(algoliaProductDto.getObjectID()))
                 .collect(Collectors.toSet());
 
-        return this.productRepository.findProductsByIdIn(productIds);
+        Set<ProductCategory> requiredCategories = this
+                .productCategoryRepository
+                .findAllByKeyIn(new HashSet<>(searchDto.getCategories()));
+
+        if (searchDto.getSortBy().equals("ASC")) {
+            System.out.println("ASC");
+            return this
+                    .productRepository
+                    .findProductsByIdInAndCategoriesInOrderByCostAsc(productIds, requiredCategories);
+        } else if (searchDto.getSortBy().equals("DESC")) {
+            System.out.println("DESC");
+            return this
+                    .productRepository
+                    .findProductsByIdInAndCategoriesInOrderByCostDesc(productIds, requiredCategories);
+        } else {
+            throw new NotFoundException(404, "Sort By Query Not Found");
+        }
     }
 
     @Override
