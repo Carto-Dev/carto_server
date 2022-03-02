@@ -2,9 +2,11 @@ package com.carto.server.modules.product;
 
 import com.carto.server.model.CartoUser;
 import com.carto.server.model.Product;
+import com.carto.server.model.ProductCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Repository
@@ -16,6 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Set<Product> findProductsByUser(CartoUser cartoUser);
 
-    Set<Product> findProductsByIdIn(Set<Long> ids);
+    Set<Product> findProductsByIdInAndCategoriesInOrderByCostDesc(Set<Long> id, Set<ProductCategory> categories);
+
+    Set<Product> findProductsByIdInAndCategoriesInOrderByCostAsc(Collection<Long> id, Set<ProductCategory> categories);
 
 }
