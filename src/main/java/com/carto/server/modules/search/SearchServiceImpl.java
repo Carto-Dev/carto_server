@@ -12,6 +12,7 @@ import com.carto.server.modules.product.ProductCategoryRepository;
 import com.carto.server.modules.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,6 +34,15 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public Set<Product> searchForProducts(SearchDto searchDto) throws NotFoundException {
         log.info("Searching For Products: " + searchDto.getQuery() + " in Algolia");
+
+        if (searchDto.getQuery().equals("EMPTY")) {
+            if (searchDto.getSortBy().equals("ASC"))
+                return new HashSet<>(this.productRepository.findAll(Sort.by("cost").ascending()));
+            else if (searchDto.getSortBy().equals("DESC"))
+                return new HashSet<>(this.productRepository.findAll(Sort.by("cost").descending()));
+            else
+                throw new NotFoundException(404, "Sort By Query Not Found");
+        }
 
         SearchResult<AlgoliaProductDto> searchResult = this
                 .algoliaService
