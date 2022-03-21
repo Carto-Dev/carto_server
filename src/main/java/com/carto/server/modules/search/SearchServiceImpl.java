@@ -36,12 +36,30 @@ public class SearchServiceImpl implements SearchService {
         log.info("Searching For Products: " + searchDto.getQuery() + " in Algolia");
 
         if (searchDto.getQuery().equals("EMPTY")) {
-            if (searchDto.getSortBy().equals("ASC"))
-                return new HashSet<>(this.productRepository.findAll(Sort.by("cost").ascending()));
-            else if (searchDto.getSortBy().equals("DESC"))
-                return new HashSet<>(this.productRepository.findAll(Sort.by("cost").descending()));
-            else
-                throw new NotFoundException(404, "Sort By Query Not Found");
+            if (searchDto.getCategories().isEmpty())
+                if (searchDto.getSortBy().equals("ASC"))
+                    return new HashSet<>(this.productRepository.findAll(Sort.by("cost").ascending()));
+                else if (searchDto.getSortBy().equals("DESC"))
+                    return new HashSet<>(this.productRepository.findAll(Sort.by("cost").descending()));
+                else
+                    throw new NotFoundException(404, "Sort By Query Not Found");
+            else {
+                Set<String> productCategories = new HashSet<>(searchDto.getCategories())
+                        .stream()
+                        .filter(category -> !category.equals("EMPTY"))
+                        .collect(Collectors.toSet());
+
+                Set<ProductCategory> requiredCategories = this
+                        .productCategoryRepository
+                        .findAllByKeyIn(productCategories);
+
+                if (searchDto.getSortBy().equals("ASC"))
+                    return this.productRepository.findProductsByCategoriesInAndOrderByCostAsc(requiredCategories);
+                else if (searchDto.getSortBy().equals("DESC"))
+                    return this.productRepository.findProductsByCategoriesInAndOrderByCostDesc(requiredCategories);
+                else
+                    throw new NotFoundException(404, "Sort By Query Not Found");
+            }
         }
 
         SearchResult<AlgoliaProductDto> searchResult = this
