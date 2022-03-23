@@ -16,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,9 +53,9 @@ public class SearchServiceImpl implements SearchService {
                         .findAllByKeyIn(productCategories);
 
                 if (searchDto.getSortBy().equals("ASC"))
-                    return this.productRepository.findProductsByCategoriesInAndOrderByCostAsc(requiredCategories);
+                    return this.productRepository.findProductsByCategoriesInOrderByCostAsc(requiredCategories);
                 else if (searchDto.getSortBy().equals("DESC"))
-                    return this.productRepository.findProductsByCategoriesInAndOrderByCostDesc(requiredCategories);
+                    return this.productRepository.findProductsByCategoriesInOrderByCostDesc(requiredCategories);
                 else
                     throw new NotFoundException(404, "Sort By Query Not Found");
             }
