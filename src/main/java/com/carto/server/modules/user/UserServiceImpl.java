@@ -2,11 +2,13 @@ package com.carto.server.modules.user;
 
 import com.carto.server.dto.user.NewUserDto;
 import com.carto.server.dto.user.UpdateUserDto;
+import com.carto.server.exception.InternalServerErrorException;
 import com.carto.server.model.CartoUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final CartoUserRepository cartoUserRepository;
@@ -49,7 +52,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public CartoUser updateUser(CartoUser cartoUser, UpdateUserDto updateUserDto) {
+    public CartoUser updateUser(CartoUser cartoUser, UpdateUserDto updateUserDto) throws InternalServerErrorException {
+
+        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+        UserRecord.UpdateRequest request = new UserRecord
+                .UpdateRequest(cartoUser.getFirebaseId())
+                .setDisplayName(updateUserDto.getDisplayName());
+
+        try {
+
+            firebaseAuth.updateUser(request);
+        } catch (FirebaseAuthException exception) {
+            exception.printStackTrace();
+            throw new InternalServerErrorException(
+                    500,
+                    "Something went wrong, please try again later"
+            );
+        }
+
         cartoUser.setDisplayName(updateUserDto.getDisplayName());
 
         return this.cartoUserRepository.save(cartoUser);

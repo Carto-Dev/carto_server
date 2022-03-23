@@ -2,6 +2,7 @@ package com.carto.server.modules.user;
 
 import com.carto.server.annotation.LoggedInUser;
 import com.carto.server.dto.user.UpdateUserDto;
+import com.carto.server.exception.InternalServerErrorException;
 import com.carto.server.modelDtos.UserDto;
 import com.carto.server.model.CartoUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @PutMapping()
-    public UserDto updateUser(@LoggedInUser CartoUser cartoUser, @Valid @RequestBody UpdateUserDto updateUserDto) {
+    public UserDto updateUser(@LoggedInUser CartoUser cartoUser, @Valid @RequestBody UpdateUserDto updateUserDto) throws InternalServerErrorException {
         CartoUser user = this.userService.updateUser(cartoUser, updateUserDto);
 
         UserDto userDto = new UserDto();
