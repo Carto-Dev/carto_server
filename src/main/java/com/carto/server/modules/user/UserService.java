@@ -15,6 +15,6 @@ public interface UserService {
 
     CartoUser updateUser(CartoUser cartoUser, UpdateUserDto updateUserDto) throws InternalServerErrorException;
 
-    void deleteUser(CartoUser cartoUser);
+    void deleteUser(CartoUser cartoUser) throws InternalServerErrorException;
 
 }

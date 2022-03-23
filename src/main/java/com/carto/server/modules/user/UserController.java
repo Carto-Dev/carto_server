@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @DeleteMapping()
-    public void deleteUser(@LoggedInUser CartoUser cartoUser) {
+    public void deleteUser(@LoggedInUser CartoUser cartoUser) throws InternalServerErrorException {
         this.userService.deleteUser(cartoUser);
     }
 

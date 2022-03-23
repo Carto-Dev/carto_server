@@ -77,7 +77,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void deleteUser(CartoUser cartoUser) {
+    public void deleteUser(CartoUser cartoUser) throws InternalServerErrorException {
+        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+        try {
+
+            firebaseAuth.deleteUser(cartoUser.getFirebaseId());
+        } catch (FirebaseAuthException exception) {
+            exception.printStackTrace();
+            throw new InternalServerErrorException(
+                    500,
+                    "Something went wrong, please try again later"
+            );
+        }
+
         this.cartoUserRepository.delete(cartoUser);
     }
 
